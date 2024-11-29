@@ -5,6 +5,9 @@ import telegram
 from random import randint
 
 
+ORDINAL_NUMBER = randint(0, 3018)
+
+
 def get_comics(url):
     response = requests.get(url)
     response.raise_for_status()
@@ -21,11 +24,10 @@ def publish_comics(chat_id, alt):
 
 if __name__ == '__main__':
     load_dotenv()
-    ordinal_number = randint(0, 3018)
     chat_id = getenv('TG_CHANNEL_CHAT_ID')
     bot_token = getenv('TG_BOT_TOKEN')
     bot = telegram.Bot(token=bot_token)
-    url = f'https://xkcd.com/{ordinal_number}/info.0.json'
+    url = f'https://xkcd.com/{ORDINAL_NUMBER}/info.0.json'
     image, alt = get_comics(url)
     with open('img/comics.png', 'wb') as file:
         file.write(image)
