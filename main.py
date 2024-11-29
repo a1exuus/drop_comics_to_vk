@@ -1,6 +1,6 @@
 import requests
 from dotenv import load_dotenv
-from os import getenv, remove
+from os import environ, remove
 import telegram
 from random import randint
 
@@ -18,14 +18,15 @@ def get_comics(url):
 
 
 def publish_comics(chat_id, alt):
-    bot.send_photo(chat_id=chat_id, photo=open('img/comics.png', 'rb'), caption=alt)
+    with open('img/comics.png', 'rb') as photo:
+        bot.send_photo(chat_id=chat_id, photo=photo, caption=alt)
     remove('img/comics.png')
 
 
 if __name__ == '__main__':
     load_dotenv()
-    chat_id = getenv('TG_CHANNEL_CHAT_ID')
-    bot_token = getenv('TG_BOT_TOKEN')
+    chat_id = environ['TG_CHANNEL_CHAT_ID']
+    bot_token = environ['TG_BOT_TOKEN']
     bot = telegram.Bot(token=bot_token)
     url = f'https://xkcd.com/{ORDINAL_NUMBER}/info.0.json'
     image, alt = get_comics(url)
