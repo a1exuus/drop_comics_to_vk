@@ -1,6 +1,7 @@
 import requests
 from dotenv import load_dotenv
 from os import environ, remove
+from os.path import join
 import telegram
 from random import randint
 
@@ -20,7 +21,6 @@ def get_comics(url):
 def publish_comics(chat_id, alt):
     with open('img/comics.png', 'rb') as photo:
         bot.send_photo(chat_id=chat_id, photo=photo, caption=alt)
-    remove('img/comics.png')
 
 
 if __name__ == '__main__':
@@ -28,8 +28,18 @@ if __name__ == '__main__':
     chat_id = environ['TG_CHANNEL_CHAT_ID']
     bot_token = environ['TG_BOT_TOKEN']
     bot = telegram.Bot(token=bot_token)
+    comics_path = join('img', 'comics.png')
     url = f'https://xkcd.com/{ORDINAL_NUMBER}/info.0.json'
-    image, alt = get_comics(url)
-    with open('img/comics.png', 'wb') as file:
-        file.write(image)
-    publish_comics(chat_id, alt)
+    try:
+        image, alt = get_comics(url)
+        with open('img/comics.png', 'wb') as file:
+            file.write(image)
+        publish_comics(chat_id, alt)
+        raise ValueError("Проверка исключения")
+    except Exception as e:
+        print(f"Произошла ошибка: {e}")
+    finally:
+        try:
+            remove('img/comics.png')
+        except FileNotFoundError:
+            pass
