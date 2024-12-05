@@ -4,9 +4,11 @@ from os import environ, remove
 from os.path import join
 import telegram
 from random import randint
+from get_amount_of_comicses import get_amount_of_comicses
 
 
-ORDINAL_NUMBER = randint(0, 3018)
+AMOUNT = get_amount_of_comicses('https://xkcd.com//info.0.json')
+ORDINAL_NUMBER = randint(0, AMOUNT)
 
 
 def get_comics(url):
