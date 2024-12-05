@@ -1,6 +1,6 @@
 import requests
 from dotenv import load_dotenv
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 from os import environ
 import telegram
 from random import randint
@@ -32,7 +32,9 @@ if __name__ == '__main__':
     comics_dir = Path('img')
     comics_dir.mkdir(exist_ok=True)
     comics_path = comics_dir / 'comics.png'
-    url = f"https://xkcd.com/{ORDINAL_NUMBER}/info.0.json"
+    base_url = "https://xkcd.com"
+    path = PurePosixPath(str(ORDINAL_NUMBER), "info.0.json")
+    url = f"{base_url}/{path}"
     
     try:
         image, alt = get_comics(url)
