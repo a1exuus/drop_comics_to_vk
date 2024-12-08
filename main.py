@@ -30,8 +30,8 @@ def main():
     comics_dir.mkdir(exist_ok=True)
     comics_path = comics_dir / 'comics.png'
     base_url = "https://xkcd.com"
-    amount = get_amount_of_comicses('https://xkcd.com/info.0.json')
-    ordinal_number = randint(0, amount)
+    amount_of_comicses = get_amount_of_comicses('https://xkcd.com/info.0.json')
+    ordinal_number = randint(0, amount_of_comicses)
     path = PurePosixPath(str(ordinal_number), "info.0.json")
     url = f"{base_url}/{path}"
 
